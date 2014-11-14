@@ -28,9 +28,9 @@ class InstaRelationships extends InstaEndpoint{
      * @return string JSON response. 
      */
     public function getUserIdFollows($user_id){
-       $this->requestUrl = $this->requestUrl.$user_id.'/follows/'
+       $url = $this->requestUrl.$user_id.'/follows/'
                 .'?access_token='.$this->accessToken;
-        $response = $this->query();
+        $response = $this->httpGet($url);
         return $response; 
     }
     /**
@@ -63,9 +63,9 @@ class InstaRelationships extends InstaEndpoint{
      * @return string JSON response
      */
     public function getUserIdRelationship($user_id){
-        $this->requestUrl = $this->requestUrl.$user_id.'/relationship/'
+        $url = $this->requestUrl.$user_id.'/relationship/'
                 .'?access_token='.$this->accessToken;
-        $response = $this->query();
+        $response = $this->httpGet($url);
         return $response; 
     }
     /**
@@ -75,10 +75,12 @@ class InstaRelationships extends InstaEndpoint{
      * @return string JSON response
      */
     protected function setUserIdRelationship($user_id, $action){
-        $this->params = array('action' => $action);
-        $this->requestUrl = $this->requestUrl.$user_id.'/relationship/'
-                .'?access_token='.$this->accessToken;
-        $response = $this->query();
+        $params = array(
+            'access_token' => $this->accessToken,
+            'action' => $action
+        );
+        $url = $this->requestUrl.$user_id.'/relationship/';
+        $response = $this->post($url, $params);
         return $response; 
     }
    /**

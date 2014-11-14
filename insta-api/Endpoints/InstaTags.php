@@ -28,9 +28,9 @@ class InstaTags extends InstaEndpoint{
      * @return string JSON Response
      */
     public function getInfo($tag_name){
-        $this->requestUrl = $this->requestUrl.$tag_name.'/'
+        $url = $this->requestUrl.$tag_name.'/' 
                 .'?access_token='.$this->accessToken;
-        $response = $this->query();
+        $response = $this->httpGet($url);
         return $response;
     }
     /**
@@ -42,10 +42,16 @@ class InstaTags extends InstaEndpoint{
      * @param int $max_id Return media after this max_id.
      * @return string JSON Response
      */
-    public function getRecentMediaByTag($tag_name, $min_id='', $max_id=''){
-        $this->requestUrl = $this->requestUrl.$tag_name.'/media/recent/'
-                .'?access_token='.$this->accessToken;
-        $response = $this->query();
+    public function getRecentMediaByTag($tag_name, $count=20, $min_tag_id='', $max_tag_id=''){
+        $params = array(
+            'access_token' => $this->accessToken,
+            'count' => $count,
+            'min_tag_id' => $min_tag_id,
+            'max_tag_id' => $max_tag_id
+        );
+        $url = $this->requestUrl.$tag_name.'/media/recent/'
+                .'?'.  http_build_query($params);
+        $response = $this->httpGet($url);
         return $response;
     }
     /**
@@ -55,11 +61,11 @@ class InstaTags extends InstaEndpoint{
      */
     public function search($query){
         $params = array(
-            'q' => $query
+            'q' => $query,
+            'access_token' => $this->accessToken
         );
-        $this->requestUrl = $this->requestUrl.'search/'
-                .'?access_token='.$this->accessToken
-                .'&'.http_build_query($params);
-        return $this->query();
+        $url = $this->requestUrl.'search/'
+                .'?'.http_build_query($params);
+        return $this->httpGet($url);
     }
 }

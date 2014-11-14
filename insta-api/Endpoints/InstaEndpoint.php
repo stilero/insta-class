@@ -14,7 +14,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
-class InstaEndpoint{
+class XXXInstaEndpoint{
     
     protected $requestUrl = 'https://api.instagram.com/v1/';
     protected $accessToken;

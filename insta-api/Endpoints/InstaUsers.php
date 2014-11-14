@@ -28,10 +28,10 @@ class InstaUsers extends InstaEndpoint{
      * @return string json
      */
     public function getUserInfo($user_id){
-        $this->requestUrl = self::$_url.$user_id.'/'
+        $url = self::$_url.$user_id.'/'
                 .'?access_token='.$this->accessToken;
-        $restponse = $this->query();
-        return $restponse;
+        $response = $this->httpGet($url);
+        return $response;
     }
     /**
      * See the authenticated user's feed. 
@@ -42,14 +42,14 @@ class InstaUsers extends InstaEndpoint{
      */
     public function getSelfFeed($count='', $min_id='', $max_id=''){
         $params = array(
+            'access_token' => $this->accessToken,
             'count' => $count,
             'min_id' => $min_id,
             'max_id' => $max_id
         );
-        $this->requestUrl = self::$_url.'self/feed/'
-                .'?access_token='.$this->accessToken
-                .'&'.http_build_query($params);
-        return $this->query();
+        $url = self::$_url.'self/feed/'
+                .'?'.http_build_query($params);
+        return $this->httpGet($url);
     }
     /**
      * Get the most recent media published by a user. 
